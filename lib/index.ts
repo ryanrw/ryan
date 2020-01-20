@@ -1,3 +1,3 @@
-import { Ryan } from "./ryan";
+import { Ryan } from "./ryan"
 
-export default Ryan;
+export default Ryan

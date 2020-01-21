@@ -1,3 +1,3 @@
 import { Ryan } from "./ryan"
 
-export default Ryan
+export default new Ryan()

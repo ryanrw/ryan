@@ -1,7 +1,7 @@
 {
-  "name": "ryan",
+  "name": "esqillel",
   "version": "1.0.0",
-  "description": "Ryan SQL Builder",
+  "description": "esqillel SQL Builder",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
   "repository": "https://github.com/Ryan-Willpower/ryan.git",

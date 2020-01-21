@@ -1,9 +1,14 @@
 import { CompareSymbol, SQLExpression } from "./types/ryan"
 
+interface DataOption {
+  data: string
+  as: string
+}
+
 export class Ryan {
   query: string
 
-  select(...data: string[]): this {
+  select(...data: (string | DataOption)[]): this {
     const prettifyData = this.prettify(data)
 
     this.query = this.concatCurrentQueryWith(`SELECT${prettifyData}`)
@@ -11,7 +16,7 @@ export class Ryan {
     return this
   }
 
-  from(...table: string[]): this {
+  from(...table: (string | DataOption)[]): this {
     const prettifyData = this.prettify(table)
 
     this.query = this.concatCurrentQueryWith(`FROM${prettifyData}`)
@@ -46,15 +51,35 @@ export class Ryan {
   }
 
   prettify(data: string): string
-  prettify(data: string[]): string[]
+  prettify(data: (string | DataOption)[]): string[]
   prettify(data: any): any {
     const isArray = Array.isArray(data)
 
     if (isArray) {
-      return data.map((item: string) => ` \`${item}\``)
+      return this.SQLMapped(data)
     }
 
     return `\`${data}\``
+  }
+
+  SQLMapped(data: (string | DataOption)[]) {
+    const mappedData = data.map((item: string | DataOption) => {
+      const hasDataOption = typeof item === "object"
+
+      if (hasDataOption) {
+        return this.dataOptionMapped(item as DataOption)
+      }
+
+      return ` \`${item}\``
+    })
+
+    return mappedData
+  }
+
+  dataOptionMapped(item: DataOption) {
+    const itemWithOption = item as DataOption
+
+    return ` \`${itemWithOption.data}\` AS \`${itemWithOption.as}\``
   }
 
   concatCurrentQueryWith(newData: string): string {

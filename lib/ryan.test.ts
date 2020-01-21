@@ -24,4 +24,16 @@ describe("Ryan SQL Builder", () => {
 
     expect(query).toBe("SELECT `userid`, `username` FROM `test`, `test2`")
   })
+
+  it("Should build `SELECT` with `AS` expression", () => {
+    const ryan = new Ryan()
+
+    const { query } = ryan
+      .select({ data: "c.id", as: "company_id" }, "test")
+      .from({ data: "company", as: "c" }, "table")
+
+    expect(query).toBe(
+      "SELECT `c.id` AS `company_id`, `test` FROM `company` AS `c`, `table`"
+    )
+  })
 })

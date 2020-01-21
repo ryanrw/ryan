@@ -1,14 +1,9 @@
-import { CompareSymbol, SQLExpression } from "./types/ryan"
-
-interface DataOption {
-  data: string
-  as: string
-}
-
-interface DataToSet {
-  data: string
-  value: string
-}
+import {
+  CompareSymbol,
+  SQLExpression,
+  DataOption,
+  DataToSet,
+} from "./types/ryan"
 
 export class Ryan {
   private query: string = ""

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Ryan SQL Builder",
   "main": "dist/index.ts",
-  "types": "dist/types/ryan.d.ts",
+  "types": "dist/types/index.d.ts",
   "repository": "https://github.com/Ryan-Willpower/ryan.git",
   "author": "Ryan Willpower <surasak.c.work@gmail.com>",
   "license": "MIT",

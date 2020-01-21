@@ -5,9 +5,15 @@ interface DataOption {
   as: string
 }
 
-export class Ryan {
-  query: string
+interface DataToSet {
+  data: string
+  value: string
+}
 
+export class Ryan {
+  private query: string = ""
+
+  // Select Section
   select(...data: (string | DataOption)[]): this {
     const prettifyData = this.prettify(data)
 
@@ -50,9 +56,67 @@ export class Ryan {
     return this
   }
 
-  prettify(data: string): string
-  prettify(data: (string | DataOption)[]): string[]
-  prettify(data: any): any {
+  // Insert Section
+  insertInto(tableName: string, column: string[]) {
+    const prettifyData = this.roughlyPrettify(column)
+
+    this.query = this.concatCurrentQueryWith(
+      `INSERT INTO TABLE \`${tableName}\` (${prettifyData})`
+    )
+
+    return this
+  }
+
+  value(...values: string[]) {
+    const prettifyData = this.roughlyPrettify(values)
+
+    this.query = this.concatCurrentQueryWith(`VALUE (${prettifyData})`)
+
+    return this
+  }
+
+  // Update section
+  update(tableName: string) {
+    this.query = this.concatCurrentQueryWith(`UPDATE \`${tableName}\``)
+
+    return this
+  }
+
+  set(...data: DataToSet[]) {
+    const prettifyData = data.map((item, index) =>
+      index === 0
+        ? `${item.data}='${item.value}'`
+        : ` ${item.data}='${item.value}'`
+    )
+
+    this.query = this.concatCurrentQueryWith(`SET ${prettifyData}`)
+
+    return this
+  }
+
+  buildQuery() {
+    const query = this.query
+
+    this.resetQuery()
+
+    return query
+  }
+
+  private resetQuery() {
+    this.query = ""
+  }
+
+  private concatCurrentQueryWith(newData: string): string {
+    if (this.query) {
+      return `${this.query} ${newData}`
+    }
+
+    return newData
+  }
+
+  private prettify(data: string): string
+  private prettify(data: (string | DataOption)[]): string[]
+  private prettify(data: any): any {
     const isArray = Array.isArray(data)
 
     if (isArray) {
@@ -62,7 +126,7 @@ export class Ryan {
     return `\`${data}\``
   }
 
-  SQLMapped(data: (string | DataOption)[]) {
+  private SQLMapped(data: (string | DataOption)[]) {
     const mappedData = data.map((item: string | DataOption) => {
       const hasDataOption = typeof item === "object"
 
@@ -76,23 +140,19 @@ export class Ryan {
     return mappedData
   }
 
-  dataOptionMapped(item: DataOption) {
+  private dataOptionMapped(item: DataOption) {
     const itemWithOption = item as DataOption
 
     return ` \`${itemWithOption.data}\` AS \`${itemWithOption.as}\``
   }
 
-  concatCurrentQueryWith(newData: string): string {
-    const hasData = this.query !== undefined && this.query !== ""
-
-    if (hasData) {
-      return `${this.query} ${newData}`
-    }
-
-    return newData
+  private roughlyPrettify(data: string[]): string[] {
+    return data.map((item, index) =>
+      index === 0 ? `\`${item}\`` : ` \`${item}\``
+    )
   }
 
-  isExpressionInclude(expression: SQLExpression): boolean {
+  private isExpressionInclude(expression: SQLExpression): boolean {
     const whereRegExp = new RegExp(expression, "g")
     const isInclude = whereRegExp.test(this.query)
 

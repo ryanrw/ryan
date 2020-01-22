@@ -1,9 +1,9 @@
 {
   "name": "esqillel",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "esqillel SQL Builder",
-  "main": "dist/index.js",
-  "types": "dist/types/index.d.ts",
+  "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
   "repository": "https://github.com/Ryan-Willpower/ryan.git",
   "author": "Ryan Willpower <surasak.c.work@gmail.com>",
   "license": "MIT",

@@ -7,7 +7,7 @@ describe("`INSERT` query", () => {
       .buildQuery()
 
     expect(query).toBe(
-      "INSERT INTO TABLE `table` (`userid`, `username`) VALUES (`xxxx`, `ryan`)"
+      "INSERT INTO `table` (`userid`, `username`) VALUES (`xxxx`, `ryan`)"
     )
   })
 })

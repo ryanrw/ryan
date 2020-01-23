@@ -56,7 +56,7 @@ export class Ryan {
     const prettifyData = this.roughlyPrettify(column)
 
     this.query = this.concatCurrentQueryWith(
-      `INSERT INTO TABLE \`${tableName}\` (${prettifyData})`
+      `INSERT INTO \`${tableName}\` (${prettifyData})`
     )
 
     return this

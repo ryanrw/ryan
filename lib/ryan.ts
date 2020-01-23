@@ -62,10 +62,10 @@ export class Ryan {
     return this
   }
 
-  value(...values: string[]) {
-    const prettifyData = this.roughlyPrettify(values)
+  values(...valueList: string[]) {
+    const prettifyData = this.roughlyPrettify(valueList)
 
-    this.query = this.concatCurrentQueryWith(`VALUE (${prettifyData})`)
+    this.query = this.concatCurrentQueryWith(`VALUES (${prettifyData})`)
 
     return this
   }
